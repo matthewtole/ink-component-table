@@ -10,4 +10,4 @@ jobs:
       - run: npm install
       - run: npm test -- --collectCoverage
       - codecov/upload:
-          file: {{coverage_report_filepath}}
+          file: coverage/clover.xml
