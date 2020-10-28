@@ -1,8 +1,6 @@
 # @matthewtole/ink-table
 
-# @matthewtole/ink-table
-
-@matthewtole/ink-table is a component for Ink that renders a table.
+This is a table component for [Ink](https://github.com/vadimdemedes/ink).
 
 ## Demo
 
