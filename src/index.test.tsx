@@ -1,3 +1,4 @@
+import {Text} from 'ink';
 import {render} from 'ink-testing-library';
 import React from 'react';
 
@@ -29,8 +30,10 @@ describe('Table', () => {
       <Table columnWidths={[10, 20]}>
         <Table.Body>
           <Table.Row>
-            <Table.Cell>Hello</Table.Cell>
-            <Table.Cell>This is cell 2</Table.Cell>
+            <Table.Cell>{12345}</Table.Cell>
+            <Table.Cell>
+              <Text color="blue">This is cell 2</Text>
+            </Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
@@ -39,7 +42,7 @@ describe('Table', () => {
     expect(lastFrame()).toEqual(
       `
 ╔════════════╦══════════════════════╗
-║ Hello      ║ This is cell 2       ║
+║ 12345      ║ This is cell 2       ║
 ╚════════════╩══════════════════════╝
 `.trim()
     );

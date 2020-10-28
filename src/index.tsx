@@ -9,27 +9,25 @@ const Row: React.FC = ({children}) => {
 
   return (
     <Box>
-      <Text>║ </Text>
+      <Text>║</Text>
       {React.Children.map(children, (child, index) => (
         <>
           {React.isValidElement(child)
             ? React.cloneElement(child, {
-                width: columnWidths[index],
+                width: columnWidths[index] + 2,
               })
             : child}
-          <Text>
-            {' '}
-            ║{index === React.Children.count(children) - 1 ? '' : ' '}
-          </Text>
+          {index < React.Children.count(children) - 1 ? <Text>║</Text> : null}
         </>
       ))}
+      <Text>║</Text>
     </Box>
   );
 };
 
 const Cell: React.FC<{width?: number}> = ({children, width}) => {
   return (
-    <Box width={width}>
+    <Box width={width} paddingX={1}>
       {typeof children === 'string' || typeof children === 'number' ? (
         <Text>{children}</Text>
       ) : (
