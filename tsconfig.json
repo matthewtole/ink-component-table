@@ -1,12 +1,18 @@
 {
+  "include": ["src"],
   "compilerOptions": {
+    "incremental": true,
+    "target": "esnext",
+    "module": "es2015",
+    "allowJs": true,
     "jsx": "preserve",
-    "rootDir": "src",
-    "outDir": "dist",
-    "esModuleInterop": true,
     "declaration": true,
+    "outDir": "dist",
     "isolatedModules": true,
     "strict": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
   }
 }
