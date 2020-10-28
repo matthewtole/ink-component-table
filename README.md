@@ -4,7 +4,7 @@ This is a table component for [Ink](https://github.com/vadimdemedes/ink).
 
 ## Demo
 
-![](https://i.imgur.com/X2kgaYK.gif)
+![](https://i.imgur.com/MUv6kru.gif)
 
 ## Installation
 
