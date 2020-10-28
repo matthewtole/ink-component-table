@@ -118,4 +118,25 @@ describe('Table', () => {
 `.trim()
     );
   });
+
+  test('dynamic columns', () => {
+    const {lastFrame} = render(
+      <Table columnWidths={[10, null]} maxWidth={40}>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>Hello</Table.Cell>
+            <Table.Cell>This is cell 2</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    );
+
+    expect(lastFrame()).toEqual(
+      `
+╔════════════╦══════════════════════════╗
+║ Hello      ║ This is cell 2           ║
+╚════════════╩══════════════════════════╝
+`.trim()
+    );
+  });
 });

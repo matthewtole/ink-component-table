@@ -107,9 +107,13 @@ interface TableSubcomponents {
   Body: typeof Body;
 }
 
-export const Table: React.FC<{columnWidths: Array<number | null>}> &
-  TableSubcomponents = ({children, columnWidths}) => {
+export const Table: React.FC<{
+  columnWidths: Array<number | null>;
+  maxWidth?: number;
+}> &
+  TableSubcomponents = ({children, columnWidths, maxWidth}) => {
   const [columns] = useStdoutDimensions();
+  const width = maxWidth ?? columns;
 
   const totalFixedColumns =
     columnWidths.reduce(
@@ -123,7 +127,7 @@ export const Table: React.FC<{columnWidths: Array<number | null>}> &
   columnWidths.forEach(column => {
     calculatedColumnWidths.push(
       column === null
-        ? Math.floor((columns - 2 - totalFixedColumns) / numDynamicColumns)
+        ? Math.floor((width - 2 - totalFixedColumns) / numDynamicColumns)
         : column
     );
   });
