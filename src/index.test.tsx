@@ -1,4 +1,3 @@
-import {Text} from 'ink';
 import {render} from 'ink-testing-library';
 import React from 'react';
 
@@ -31,9 +30,7 @@ describe('Table', () => {
         <Table.Body>
           <Table.Row>
             <Table.Cell>{12345}</Table.Cell>
-            <Table.Cell>
-              <Text color="blue">This is cell 2</Text>
-            </Table.Cell>
+            <Table.Cell>This is cell 2</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
