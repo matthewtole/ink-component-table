@@ -1,1 +1,1 @@
-# ink-table
+# @matthewtole/ink-table

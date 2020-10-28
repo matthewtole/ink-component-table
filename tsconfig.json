@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "rootDir": "src",
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "declaration": true,
+    "isolatedModules": true,
+    "strict": true,
+    "moduleResolution": "node"
+  }
+}
