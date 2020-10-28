@@ -1,4 +1,4 @@
-# @matthewtole/ink-table
+# ink-component-table
 
 This is a table component for [Ink](https://github.com/vadimdemedes/ink).
 
@@ -9,13 +9,13 @@ This is a table component for [Ink](https://github.com/vadimdemedes/ink).
 ## Installation
 
 ```
-$ npm install --save @matthewtole/ink-table
+$ npm install --save ink-component-table
 ```
 
 ## Usage
 
 ```js
-import {Table} from '@matthewtole/ink-table';
+import {Table} from 'ink-component-table';
 
 <Table columnWidths={[10, 20, 30]}>
   <Table.Header>
