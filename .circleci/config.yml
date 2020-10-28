@@ -2,9 +2,9 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.0
   codecov: codecov/codecov@1.0.2
-workflows:
-  test:
-    jobs:
+jobs:
+  build:
+    steps:
       - node/test
-      - codecov/upload:
+      - codecov/upl oad:
           file: {{coverage_report_filepath}}
