@@ -1,6 +1,6 @@
 # ink-component-table
 
-[![npm](https://img.shields.io/npm/v/ink-compknent-table?style=for-the-badge)](https://www.npmjs.com/package/ink-component-table)
+[![npm](https://img.shields.io/npm/v/ink-component-table?style=for-the-badge)](https://www.npmjs.com/package/ink-component-table) [![CircleCI](https://img.shields.io/circleci/build/github/matthewtole/ink-component-table?style=for-the-badge)](https://circleci.com/gh/matthewtole/ink-component-table) [![Codecov](https://img.shields.io/codecov/c/github/matthewtole/ink-component-table?style=for-the-badge)](https://codecov.io/gh/matthewtole/ink-component-table)
 
 This is a table component for [Ink](https://github.com/vadimdemedes/ink).
 
