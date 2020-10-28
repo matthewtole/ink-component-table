@@ -41,7 +41,13 @@ const Cell: React.FC<{width?: number}> = ({children, width}) => {
 };
 
 const Header: React.FC = ({children}) => {
-  return <Box flexDirection="column">{children}</Box>;
+  const columnWidths = React.useContext(ColumnsContext);
+  return (
+    <Box flexDirection="column">
+      {children}
+      <SegmentedLine columnWidths={columnWidths} position="middle" />
+    </Box>
+  );
 };
 
 const Body: React.FC = ({children}) => {
@@ -49,10 +55,10 @@ const Body: React.FC = ({children}) => {
 
   return (
     <Box flexDirection="column">
-      {React.Children.map(children, child => {
+      {React.Children.map(children, (child, index) => {
         return (
           <>
-            <SegmentedLine columnWidths={columnWidths} />
+            {index > 0 ? <SegmentedLine columnWidths={columnWidths} /> : null}
             {child}
           </>
         );
