@@ -1,5 +1,7 @@
 # ink-component-table
 
+[![npm](https://img.shields.io/npm/v/ink-compknent-table?style=for-the-badge)](https://www.npmjs.com/package/ink-component-table)
+
 This is a table component for [Ink](https://github.com/vadimdemedes/ink).
 
 ## Demo
