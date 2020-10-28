@@ -1,12 +1,13 @@
 version: 2.1
 orbs:
-  node: circleci/node@3.0.0
   codecov: codecov/codecov@1.0.2
 jobs:
   build:
     docker:
       - image: circleci/node:10
     steps:
-      - node/test
+      - checkout
+      - run: npm install
+      - run: npm test -- --collectCoverage
       - codecov/upload:
           file: {{coverage_report_filepath}}
