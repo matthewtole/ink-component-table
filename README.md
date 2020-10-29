@@ -9,8 +9,7 @@
   <a href="https://codecov.io/gh/matthewtole/ink-component-table">
     <img alt="Code Coverage" src="https://img.shields.io/codecov/c/github/matthewtole/ink-component-table?style=for-the-badge&logo=codecov">
   </a>
-  </p>
-  <p align="center">
+  <br />
   <a href="https://github.com/matthewtole/ink-table/graphs/commit-activity">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=for-the-badge&logo=github" />
   </a>
@@ -22,11 +21,7 @@
   </a>
 </p>
 
-> A table component for [Ink](https://github.com/vadimdemedes/ink).
-
-### 🏠 [Homepage](https://www.npmjs.com/package/ink-component-table)
-
-### ✨ [Demo](https://www.npmjs.com/package/ink-component-table#demo)
+A table component for [Ink](https://github.com/vadimdemedes/ink).
 
 ## Installation
 
