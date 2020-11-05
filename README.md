@@ -33,6 +33,10 @@ npm install --save ink-component-table
 
 ![Screen recording of the component demo](https://i.imgur.com/MUv6kru.gif)
 
+```
+npm run build && npm run demo
+```
+
 ## Usage
 
 ```jsx
