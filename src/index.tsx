@@ -6,37 +6,21 @@ interface TableStyle {
   outerBorder: 'double' | 'solid';
 }
 
-const defaultStyle: TableStyle = {
-  outerBorder: 'double',
-};
+type CharacerTuple = [string, string, string, string];
 
-const ColumnsContext = React.createContext<Array<number>>([]);
-const StyleContext = React.createContext<TableStyle>(defaultStyle);
+interface BorderCharacterSet {
+  top: CharacerTuple;
+  bottom: CharacerTuple;
+  header: CharacerTuple;
+  body: CharacerTuple;
+}
 
-const HorizontalLine: React.FC<{
-  characters: [string, string, string, string];
-}> = ({characters}) => {
-  const columnWidths = React.useContext(ColumnsContext);
-  return (
-    <Text>
-      {characters[0]}
-      {columnWidths.map((c, index) => {
-        const isLast = index === columnWidths.length - 1;
-        return (
-          <React.Fragment key={index}>
-            {characters[1].repeat(c + 2)}
-            {isLast ? '' : characters[2]}
-          </React.Fragment>
-        );
-      })}
-      {characters[3]}
-    </Text>
-  );
-};
+interface BorderCharacters {
+  solid: BorderCharacterSet;
+  double: BorderCharacterSet;
+}
 
-const BORDER_CHARACTERS: {
-  [outerBorder: string]: {[type: string]: [string, string, string, string]};
-} = {
+const BORDER_CHARACTERS: BorderCharacters = {
   solid: {
     top: ['┏', '━', '┯', '┓'],
     bottom: ['┗', '━', '┷', '┛'],
@@ -54,6 +38,34 @@ const BORDER_CHARACTERS: {
 const VERTICAL_CHARACTERS = {
   solid: '┃',
   double: '║',
+};
+
+const defaultStyle: TableStyle = {
+  outerBorder: 'double',
+};
+
+const ColumnsContext = React.createContext<Array<number>>([]);
+const StyleContext = React.createContext<TableStyle>(defaultStyle);
+
+const HorizontalLine: React.FC<{
+  characters: CharacerTuple;
+}> = ({characters}) => {
+  const columnWidths = React.useContext(ColumnsContext);
+  return (
+    <Text>
+      {characters[0]}
+      {columnWidths.map((c, index) => {
+        const isLast = index === columnWidths.length - 1;
+        return (
+          <React.Fragment key={index}>
+            {characters[1].repeat(c + 2)}
+            {isLast ? '' : characters[2]}
+          </React.Fragment>
+        );
+      })}
+      {characters[3]}
+    </Text>
+  );
 };
 
 const BorderTop: React.FC = () => {
