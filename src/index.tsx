@@ -4,6 +4,43 @@ import React from 'react';
 
 const ColumnsContext = React.createContext<Array<number>>([]);
 
+const HorizontalLine: React.FC<{
+  characters: [string, string, string, string];
+}> = ({characters}) => {
+  const columnWidths = React.useContext(ColumnsContext);
+  return (
+    <Text>
+      {characters[0]}
+      {columnWidths.map((c, index) => {
+        const isLast = index === columnWidths.length - 1;
+        return (
+          <React.Fragment key={index}>
+            {characters[1].repeat(c + 2)}
+            {isLast ? '' : characters[2]}
+          </React.Fragment>
+        );
+      })}
+      {characters[3]}
+    </Text>
+  );
+};
+
+const BorderTop: React.FC = () => (
+  <HorizontalLine characters={['╔', '═', '╤', '╗']} />
+);
+
+const BorderBottom: React.FC = () => (
+  <HorizontalLine characters={['╚', '═', '╧', '╝']} />
+);
+
+const HeaderBorder: React.FC = () => (
+  <HorizontalLine characters={['╠', '═', '╪', '╣']} />
+);
+
+const BodyBorder: React.FC = () => (
+  <HorizontalLine characters={['╟', '─', '┼', '╢']} />
+);
+
 const Row: React.FC = ({children}) => {
   const columnWidths = React.useContext(ColumnsContext);
 
@@ -39,58 +76,26 @@ const Cell: React.FC<{width?: number}> = ({children, width}) => {
 };
 
 const Header: React.FC = ({children}) => {
-  const columnWidths = React.useContext(ColumnsContext);
   return (
     <Box flexDirection="column">
       {children}
-      <HorizontalLine
-        columnWidths={columnWidths}
-        characters={['╠', '═', '╪', '╣']}
-      />
+      <HeaderBorder />
     </Box>
   );
 };
 
 const Body: React.FC = ({children}) => {
-  const columnWidths = React.useContext(ColumnsContext);
-
   return (
     <Box flexDirection="column">
       {React.Children.map(children, (child, index) => {
         return (
           <>
-            {index > 0 ? (
-              <HorizontalLine
-                columnWidths={columnWidths}
-                characters={['╟', '─', '┼', '╢']}
-              />
-            ) : null}
+            {index > 0 ? <BodyBorder /> : null}
             {child}
           </>
         );
       })}
     </Box>
-  );
-};
-
-const HorizontalLine: React.FC<{
-  columnWidths: Array<number>;
-  characters: [string, string, string, string];
-}> = ({columnWidths, characters}) => {
-  return (
-    <Text>
-      {characters[0]}
-      {columnWidths.map((c, index) => {
-        const isLast = index === columnWidths.length - 1;
-        return (
-          <React.Fragment key={index}>
-            {characters[1].repeat(c + 2)}
-            {isLast ? '' : characters[2]}
-          </React.Fragment>
-        );
-      })}
-      {characters[3]}
-    </Text>
   );
 };
 
@@ -129,15 +134,9 @@ export const Table: React.FC<{
   return (
     <ColumnsContext.Provider value={calculatedColumnWidths}>
       <Box flexDirection="column" width={columns}>
-        <HorizontalLine
-          columnWidths={calculatedColumnWidths}
-          characters={['╔', '═', '╤', '╗']}
-        />
+        <BorderTop />
         {children}
-        <HorizontalLine
-          columnWidths={calculatedColumnWidths}
-          characters={['╚', '═', '╧', '╝']}
-        />
+        <BorderBottom />
       </Box>
     </ColumnsContext.Provider>
   );
