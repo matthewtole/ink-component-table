@@ -7,7 +7,7 @@ import {Table} from '../dist';
 
 const chance = new Chance();
 
-const Demo = ({numRows, updateDelay}) => {
+const Demo = ({numRows, updateDelay, outerBorderStyle, borderColor}) => {
   const makeFakeRow = () => ({
     id: chance.string({length: 8}),
     name: chance.name(),
@@ -26,7 +26,11 @@ const Demo = ({numRows, updateDelay}) => {
   });
 
   return (
-    <Table columnWidths={[15, 25, 40]} outerBorderStyle="solid">
+    <Table
+      columnWidths={[15, 25, 40]}
+      outerBorderStyle={outerBorderStyle}
+      borderColor={borderColor}
+    >
       <Table.Header>
         <Table.Row>
           <Table.Cell color="blue" bold>
@@ -60,17 +64,22 @@ const cli = meow(
  
     Options
       --outer-border
+      --border-color
       --rows
       --update
  
     Examples
-      $ npm run demo --outer-border=solid --rows=5 --update=1000
+      $ npm run demo --outer-border=solid --border-color=white --rows=5 --update=1000
 `,
   {
     flags: {
       'outer-border': {
         type: 'string',
         default: 'double',
+      },
+      'border-color': {
+        type: 'string',
+        default: 'white',
       },
       rows: {
         type: 'number',
@@ -88,6 +97,7 @@ render(
   <Demo
     numRows={cli.flags.rows}
     updateDelay={cli.flags.update}
-    outerBorderStyle={cli.flags['outer-border']}
+    outerBorderStyle={cli.flags.outerBorder}
+    borderColor={cli.flags.borderColor}
   />
 );

@@ -1,9 +1,11 @@
+import {ForegroundColor} from 'chalk';
 import {Box, Spacer, Text, TextProps} from 'ink';
 import useStdoutDimensions from 'ink-use-stdout-dimensions';
 import React from 'react';
 
 interface TableStyle {
   outerBorder: 'double' | 'solid';
+  borderColor: typeof ForegroundColor;
 }
 
 type CharacerTuple = [string, string, string, string];
@@ -42,6 +44,7 @@ const VERTICAL_CHARACTERS = {
 
 const defaultStyle: TableStyle = {
   outerBorder: 'double',
+  borderColor: 'white',
 };
 
 const ColumnsContext = React.createContext<Array<number>>([]);
@@ -51,8 +54,9 @@ const HorizontalLine: React.FC<{
   characters: CharacerTuple;
 }> = ({characters}) => {
   const columnWidths = React.useContext(ColumnsContext);
+  const {borderColor} = React.useContext(StyleContext);
   return (
-    <Text>
+    <Text color={borderColor}>
       {characters[0]}
       {columnWidths.map((c, index) => {
         const isLast = index === columnWidths.length - 1;
@@ -90,11 +94,11 @@ const BodyBorder: React.FC = () => {
 
 const Row: React.FC = ({children}) => {
   const columnWidths = React.useContext(ColumnsContext);
-  const {outerBorder} = React.useContext(StyleContext);
+  const {outerBorder, borderColor} = React.useContext(StyleContext);
 
   return (
     <Box>
-      <Text>{VERTICAL_CHARACTERS[outerBorder]}</Text>
+      <Text color={borderColor}>{VERTICAL_CHARACTERS[outerBorder]}</Text>
       {React.Children.map(children, (child, index) => (
         <>
           {React.isValidElement(child)
@@ -102,10 +106,12 @@ const Row: React.FC = ({children}) => {
                 width: columnWidths[index] + 2,
               })
             : child}
-          {index < React.Children.count(children) - 1 ? <Text>│</Text> : null}
+          {index < React.Children.count(children) - 1 ? (
+            <Text color={borderColor}>│</Text>
+          ) : null}
         </>
       ))}
-      <Text>{VERTICAL_CHARACTERS[outerBorder]}</Text>
+      <Text color={borderColor}>{VERTICAL_CHARACTERS[outerBorder]}</Text>
     </Box>
   );
 };
@@ -184,7 +190,8 @@ interface TableSubcomponents {
 interface TableProps {
   columnWidths: Array<number | null>;
   maxWidth?: number;
-  outerBorderStyle?: 'double' | 'solid';
+  outerBorderStyle?: TableStyle['outerBorder'];
+  borderColor?: TableStyle['borderColor'];
 }
 
 export const Table: React.FC<TableProps> & TableSubcomponents = ({
@@ -192,6 +199,7 @@ export const Table: React.FC<TableProps> & TableSubcomponents = ({
   columnWidths,
   maxWidth,
   outerBorderStyle,
+  borderColor,
 }) => {
   const [columns] = useStdoutDimensions();
   const width = maxWidth ?? columns;
@@ -207,6 +215,7 @@ export const Table: React.FC<TableProps> & TableSubcomponents = ({
         value={{
           ...defaultStyle,
           outerBorder: outerBorderStyle ?? defaultStyle.outerBorder,
+          borderColor: borderColor ?? defaultStyle.borderColor,
         }}
       >
         <Box flexDirection="column" width={columns}>
