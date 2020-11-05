@@ -99,21 +99,10 @@ const Body: React.FC = ({children}) => {
   );
 };
 
-interface TableSubcomponents {
-  Row: typeof Row;
-  Header: typeof Header;
-  Cell: typeof Cell;
-  Body: typeof Body;
-}
-
-export const Table: React.FC<{
-  columnWidths: Array<number | null>;
-  maxWidth?: number;
-}> &
-  TableSubcomponents = ({children, columnWidths, maxWidth}) => {
-  const [columns] = useStdoutDimensions();
-  const width = maxWidth ?? columns;
-
+function calculateColumns(
+  width: number,
+  columnWidths: Array<number | null>
+): Array<number> {
   const totalFixedColumns =
     columnWidths.reduce(
       (total, column) => (column === null ? total : (total ?? 0) + column + 4),
@@ -130,9 +119,31 @@ export const Table: React.FC<{
         : column
     );
   });
+  return calculatedColumnWidths;
+}
+
+interface TableSubcomponents {
+  Row: typeof Row;
+  Header: typeof Header;
+  Cell: typeof Cell;
+  Body: typeof Body;
+}
+
+export const Table: React.FC<{
+  columnWidths: Array<number | null>;
+  maxWidth?: number;
+}> &
+  TableSubcomponents = ({children, columnWidths, maxWidth}) => {
+  const [columns] = useStdoutDimensions();
+  const width = maxWidth ?? columns;
+
+  const calculatedColumns = React.useMemo(
+    () => calculateColumns(width, columnWidths),
+    [width, columnWidths]
+  );
 
   return (
-    <ColumnsContext.Provider value={calculatedColumnWidths}>
+    <ColumnsContext.Provider value={calculatedColumns}>
       <Box flexDirection="column" width={columns}>
         <BorderTop />
         {children}
