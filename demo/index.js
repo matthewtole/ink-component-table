@@ -29,9 +29,15 @@ const Demo = ({numRows, updateDelay}) => {
     <Table columnWidths={[15, 25, 40]} outerBorderStyle="solid">
       <Table.Header>
         <Table.Row>
-          <Table.Cell>ID</Table.Cell>
-          <Table.Cell>Name</Table.Cell>
-          <Table.Cell>Email</Table.Cell>
+          <Table.Cell color="blue" bold>
+            ID
+          </Table.Cell>
+          <Table.Cell color="blue" bold>
+            Name
+          </Table.Cell>
+          <Table.Cell color="blue" bold>
+            Email
+          </Table.Cell>
         </Table.Row>
       </Table.Header>
       <Table.Body>

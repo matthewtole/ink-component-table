@@ -1,4 +1,4 @@
-import {Box, Spacer, Text} from 'ink';
+import {Box, Spacer, Text, TextProps} from 'ink';
 import useStdoutDimensions from 'ink-use-stdout-dimensions';
 import React from 'react';
 
@@ -98,11 +98,15 @@ const Row: React.FC = ({children}) => {
   );
 };
 
-const Cell: React.FC<{width?: number}> = ({children, width}) => {
+const Cell: React.FC<{width?: number} & TextProps> = ({
+  children,
+  width,
+  ...textProps
+}) => {
   return (
     <Box width={width} paddingX={1}>
       {typeof children === 'string' || typeof children === 'number' ? (
-        <Text>{children}</Text>
+        <Text {...textProps}>{children}</Text>
       ) : (
         children
       )}
