@@ -1,6 +1,7 @@
 import React from 'react';
 import {render} from 'ink';
 import Chance from 'chance';
+import meow from 'meow';
 
 import {Table} from '../dist';
 
@@ -25,7 +26,7 @@ const Demo = ({numRows, updateDelay}) => {
   });
 
   return (
-    <Table columnWidths={[15, 25, 40]}>
+    <Table columnWidths={[15, 25, 40]} outerBorderStyle="solid">
       <Table.Header>
         <Table.Row>
           <Table.Cell>ID</Table.Cell>
@@ -46,4 +47,41 @@ const Demo = ({numRows, updateDelay}) => {
   );
 };
 
-render(<Demo numRows={10} updateDelay={1500} />);
+const cli = meow(
+  `
+    Usage
+      $ npm run demo
+ 
+    Options
+      --outer-border
+      --rows
+      --update
+ 
+    Examples
+      $ npm run demo --outer-border=solid --rows=5 --update=1000
+`,
+  {
+    flags: {
+      'outer-border': {
+        type: 'string',
+        default: 'double',
+      },
+      rows: {
+        type: 'number',
+        default: 10,
+      },
+      update: {
+        type: 'number',
+        default: 1500,
+      },
+    },
+  }
+);
+
+render(
+  <Demo
+    numRows={cli.flags.rows}
+    updateDelay={cli.flags.update}
+    outerBorderStyle={cli.flags['outer-border']}
+  />
+);

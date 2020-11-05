@@ -2,7 +2,16 @@ import {Box, Spacer, Text} from 'ink';
 import useStdoutDimensions from 'ink-use-stdout-dimensions';
 import React from 'react';
 
+interface TableStyle {
+  outerBorder: 'double' | 'solid';
+}
+
+const defaultStyle: TableStyle = {
+  outerBorder: 'double',
+};
+
 const ColumnsContext = React.createContext<Array<number>>([]);
+const StyleContext = React.createContext<TableStyle>(defaultStyle);
 
 const HorizontalLine: React.FC<{
   characters: [string, string, string, string];
@@ -25,28 +34,55 @@ const HorizontalLine: React.FC<{
   );
 };
 
-const BorderTop: React.FC = () => (
-  <HorizontalLine characters={['╔', '═', '╤', '╗']} />
-);
+const BORDER_CHARACTERS: {
+  [outerBorder: string]: {[type: string]: [string, string, string, string]};
+} = {
+  solid: {
+    top: ['┏', '━', '┯', '┓'],
+    bottom: ['┗', '━', '┷', '┛'],
+    header: ['┣', '━', '┿', '┫'],
+    body: ['┠', '─', '┼', '┨'],
+  },
+  double: {
+    top: ['╔', '═', '╤', '╗'],
+    bottom: ['╚', '═', '╧', '╝'],
+    header: ['╠', '═', '╪', '╣'],
+    body: ['╟', '─', '┼', '╢'],
+  },
+};
 
-const BorderBottom: React.FC = () => (
-  <HorizontalLine characters={['╚', '═', '╧', '╝']} />
-);
+const VERTICAL_CHARACTERS = {
+  solid: '┃',
+  double: '║',
+};
 
-const HeaderBorder: React.FC = () => (
-  <HorizontalLine characters={['╠', '═', '╪', '╣']} />
-);
+const BorderTop: React.FC = () => {
+  const {outerBorder} = React.useContext(StyleContext);
+  return <HorizontalLine characters={BORDER_CHARACTERS[outerBorder].top} />;
+};
 
-const BodyBorder: React.FC = () => (
-  <HorizontalLine characters={['╟', '─', '┼', '╢']} />
-);
+const BorderBottom: React.FC = () => {
+  const {outerBorder} = React.useContext(StyleContext);
+  return <HorizontalLine characters={BORDER_CHARACTERS[outerBorder].bottom} />;
+};
+
+const HeaderBorder: React.FC = () => {
+  const {outerBorder} = React.useContext(StyleContext);
+  return <HorizontalLine characters={BORDER_CHARACTERS[outerBorder].header} />;
+};
+
+const BodyBorder: React.FC = () => {
+  const {outerBorder} = React.useContext(StyleContext);
+  return <HorizontalLine characters={BORDER_CHARACTERS[outerBorder].body} />;
+};
 
 const Row: React.FC = ({children}) => {
   const columnWidths = React.useContext(ColumnsContext);
+  const {outerBorder} = React.useContext(StyleContext);
 
   return (
     <Box>
-      <Text>║</Text>
+      <Text>{VERTICAL_CHARACTERS[outerBorder]}</Text>
       {React.Children.map(children, (child, index) => (
         <>
           {React.isValidElement(child)
@@ -57,7 +93,7 @@ const Row: React.FC = ({children}) => {
           {index < React.Children.count(children) - 1 ? <Text>│</Text> : null}
         </>
       ))}
-      <Text>║</Text>
+      <Text>{VERTICAL_CHARACTERS[outerBorder]}</Text>
     </Box>
   );
 };
@@ -129,11 +165,18 @@ interface TableSubcomponents {
   Body: typeof Body;
 }
 
-export const Table: React.FC<{
+interface TableProps {
   columnWidths: Array<number | null>;
   maxWidth?: number;
-}> &
-  TableSubcomponents = ({children, columnWidths, maxWidth}) => {
+  outerBorderStyle?: 'double' | 'solid';
+}
+
+export const Table: React.FC<TableProps> & TableSubcomponents = ({
+  children,
+  columnWidths,
+  maxWidth,
+  outerBorderStyle,
+}) => {
   const [columns] = useStdoutDimensions();
   const width = maxWidth ?? columns;
 
@@ -144,11 +187,18 @@ export const Table: React.FC<{
 
   return (
     <ColumnsContext.Provider value={calculatedColumns}>
-      <Box flexDirection="column" width={columns}>
-        <BorderTop />
-        {children}
-        <BorderBottom />
-      </Box>
+      <StyleContext.Provider
+        value={{
+          ...defaultStyle,
+          outerBorder: outerBorderStyle ?? defaultStyle.outerBorder,
+        }}
+      >
+        <Box flexDirection="column" width={columns}>
+          <BorderTop />
+          {children}
+          <BorderBottom />
+        </Box>
+      </StyleContext.Provider>
     </ColumnsContext.Provider>
   );
 };
