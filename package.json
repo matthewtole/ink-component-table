@@ -40,7 +40,7 @@
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "babel src/index.tsx --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
-    "test": "jest",
+    "test": "FORCE_COLOR=0 jest",
     "demo": "npm build && clear && babel-node demo/index.js",
     "prepublishOnly": "npm run build"
   },
