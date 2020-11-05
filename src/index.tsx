@@ -17,7 +17,7 @@ const Row: React.FC = ({children}) => {
                 width: columnWidths[index] + 2,
               })
             : child}
-          {index < React.Children.count(children) - 1 ? <Text>║</Text> : null}
+          {index < React.Children.count(children) - 1 ? <Text>│</Text> : null}
         </>
       ))}
       <Text>║</Text>
@@ -43,7 +43,10 @@ const Header: React.FC = ({children}) => {
   return (
     <Box flexDirection="column">
       {children}
-      <SegmentedLine columnWidths={columnWidths} position="middle" />
+      <HorizontalLine
+        columnWidths={columnWidths}
+        characters={['╠', '═', '╪', '╣']}
+      />
     </Box>
   );
 };
@@ -56,7 +59,12 @@ const Body: React.FC = ({children}) => {
       {React.Children.map(children, (child, index) => {
         return (
           <>
-            {index > 0 ? <SegmentedLine columnWidths={columnWidths} /> : null}
+            {index > 0 ? (
+              <HorizontalLine
+                columnWidths={columnWidths}
+                characters={['╟', '─', '┼', '╢']}
+              />
+            ) : null}
             {child}
           </>
         );
@@ -65,35 +73,23 @@ const Body: React.FC = ({children}) => {
   );
 };
 
-const CORNERS: {[key: string]: string} = {
-  'top-left': '╔',
-  'top-center': '╦',
-  'top-right': '╗',
-  'middle-left': '╠',
-  'middle-center': '╬',
-  'middle-right': '╣',
-  'bottom-left': '╚',
-  'bottom-center': '╩',
-  'bottom-right': '╝',
-};
-
-const SegmentedLine: React.FC<{
+const HorizontalLine: React.FC<{
   columnWidths: Array<number>;
-  position?: 'top' | 'bottom' | 'middle';
-}> = ({columnWidths, position = 'middle'}) => {
+  characters: [string, string, string, string];
+}> = ({columnWidths, characters}) => {
   return (
     <Text>
-      {CORNERS[`${position}-left`]}
+      {characters[0]}
       {columnWidths.map((c, index) => {
         const isLast = index === columnWidths.length - 1;
         return (
           <React.Fragment key={index}>
-            {'═'.repeat(c + 2)}
-            {isLast ? '' : CORNERS[`${position}-center`]}
+            {characters[1].repeat(c + 2)}
+            {isLast ? '' : characters[2]}
           </React.Fragment>
         );
       })}
-      {CORNERS[`${position}-right`]}
+      {characters[3]}
     </Text>
   );
 };
@@ -133,11 +129,14 @@ export const Table: React.FC<{
   return (
     <ColumnsContext.Provider value={calculatedColumnWidths}>
       <Box flexDirection="column" width={columns}>
-        <SegmentedLine columnWidths={calculatedColumnWidths} position="top" />
-        {children}
-        <SegmentedLine
+        <HorizontalLine
           columnWidths={calculatedColumnWidths}
-          position="bottom"
+          characters={['╔', '═', '╤', '╗']}
+        />
+        {children}
+        <HorizontalLine
+          columnWidths={calculatedColumnWidths}
+          characters={['╚', '═', '╧', '╝']}
         />
       </Box>
     </ColumnsContext.Provider>
